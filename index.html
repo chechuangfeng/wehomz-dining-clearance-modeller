@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Model the space remaining around a rectangular dining table using your room measurements, table position and measured chair pull-out extents. Print or download your measurement record.">
+  <meta name="theme-color" content="#f4f1e9">
+  <title>Dining Table Clearance Modeller · WEHOMZ Space Notes</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#measurements">Skip to measurements</a>
+  <div class="page">
+    <header class="masthead">
+      <span class="brand">WEHOMZ <span>Space Notes</span></span>
+      <span class="privacy-note">Browser-local · no account or upload</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">A measured view of your room</p>
+        <h1 id="page-title">What remains around your dining table?</h1>
+        <p class="lede">Place a rectangular table in a rectangular room. Add the chair pull-out extent you measured at each edge, then see the space remaining at each wall.</p>
+        <p class="example-note"><strong>Illustrative values are loaded.</strong> Replace them with your own measurements before using a record.</p>
+      </section>
+
+      <div class="workspace">
+        <section class="input-panel" id="measurements" aria-labelledby="measure-title">
+          <div class="panel-heading">
+            <h2 id="measure-title">Your measurements</h2>
+            <label class="unit-control" for="unit">Units
+              <select id="unit"><option value="cm">cm</option><option value="in">inches</option></select>
+            </label>
+          </div>
+          <p class="small">Width runs left to right. Depth runs top to bottom. All extents begin at the table edge.</p>
+
+          <form id="model-form" novalidate>
+            <fieldset>
+              <legend><span class="section-number">01</span> Room rectangle</legend>
+              <div class="input-grid">
+                <div class="field"><label for="roomWidth">Room width <span class="unit-label">cm</span></label><input id="roomWidth" name="roomWidth" type="number" min="0" step="any" value="460" required aria-describedby="roomWidth-error"><span class="field-error" id="roomWidth-error"></span></div>
+                <div class="field"><label for="roomDepth">Room depth <span class="unit-label">cm</span></label><input id="roomDepth" name="roomDepth" type="number" min="0" step="any" value="360" required aria-describedby="roomDepth-error"><span class="field-error" id="roomDepth-error"></span></div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><span class="section-number">02</span> Table rectangle</legend>
+              <div class="input-grid">
+                <div class="field"><label for="tableWidth">Table width <span class="unit-label">cm</span></label><input id="tableWidth" name="tableWidth" type="number" min="0" step="any" value="180" required aria-describedby="tableWidth-error"><span class="field-error" id="tableWidth-error"></span></div>
+                <div class="field"><label for="tableDepth">Table depth <span class="unit-label">cm</span></label><input id="tableDepth" name="tableDepth" type="number" min="0" step="any" value="90" required aria-describedby="tableDepth-error"><span class="field-error" id="tableDepth-error"></span></div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><span class="section-number">03</span> Table position</legend>
+              <p class="field-help">Distance from the room’s left and top boundaries to the matching table edges. Keep the same orientation when measuring.</p>
+              <div class="input-grid">
+                <div class="field"><label for="offsetLeft">From left boundary <span class="unit-label">cm</span></label><input id="offsetLeft" name="offsetLeft" type="number" min="0" step="any" value="140" required aria-describedby="offsetLeft-error"><span class="field-error" id="offsetLeft-error"></span></div>
+                <div class="field"><label for="offsetTop">From top boundary <span class="unit-label">cm</span></label><input id="offsetTop" name="offsetTop" type="number" min="0" step="any" value="120" required aria-describedby="offsetTop-error"><span class="field-error" id="offsetTop-error"></span></div>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend><span class="section-number">04</span> Measured chair extents</legend>
+              <p class="field-help">Measure outward from each table edge to the furthest chair position you want to model. Use 0 for an edge with no extent. Enter your own measurements; there is no recommended threshold here.</p>
+              <div class="input-grid">
+                <div class="field"><label for="extentLeft">Left extent <span class="unit-label">cm</span></label><input id="extentLeft" name="extentLeft" type="number" min="0" step="any" value="55" required aria-describedby="extentLeft-error"><span class="field-error" id="extentLeft-error"></span></div>
+                <div class="field"><label for="extentRight">Right extent <span class="unit-label">cm</span></label><input id="extentRight" name="extentRight" type="number" min="0" step="any" value="55" required aria-describedby="extentRight-error"><span class="field-error" id="extentRight-error"></span></div>
+                <div class="field"><label for="extentTop">Top extent <span class="unit-label">cm</span></label><input id="extentTop" name="extentTop" type="number" min="0" step="any" value="50" required aria-describedby="extentTop-error"><span class="field-error" id="extentTop-error"></span></div>
+                <div class="field"><label for="extentBottom">Bottom extent <span class="unit-label">cm</span></label><input id="extentBottom" name="extentBottom" type="number" min="0" step="any" value="50" required aria-describedby="extentBottom-error"><span class="field-error" id="extentBottom-error"></span></div>
+              </div>
+            </fieldset>
+            <label class="measurement-source"><input id="measured" type="checkbox"><span>I have replaced the example values with my measurements.</span></label>
+            <p class="small precision-note">Unit changes preserve the stored measurements. Display values normally round to 3 decimals.</p>
+            <button type="button" class="text-button" id="reset">Restore illustrative example</button>
+          </form>
+        </section>
+
+        <section class="model-panel" aria-labelledby="model-title">
+          <div class="panel-heading"><h2 id="model-title">Top view</h2><span class="source-badge" id="source-badge">Illustrative example</span></div>
+          <p id="model-error" class="model-error" role="status" hidden></p>
+          <div class="diagram-wrap" id="diagram-wrap">
+            <svg id="diagram" role="img" aria-labelledby="diagram-title diagram-description" viewBox="0 0 900 700">
+              <title id="diagram-title">Room, table and measured chair extent envelope</title>
+              <desc id="diagram-description">The diagram updates when you change a measurement.</desc>
+              <g id="diagram-content"></g>
+            </svg>
+          </div>
+          <div class="diagram-key"><span><i class="key-room"></i>Room boundary</span><span><i class="key-table"></i>Table</span><span><i class="key-extent"></i>Extent envelope</span></div>
+          <p class="small diagram-note">The envelope combines the four extents into one rectangle. Individual chair shapes, corner movements and doors require separate measurements.</p>
+
+          <div class="results-heading"><h3>Remaining at each boundary</h3><span class="small">After the entered extent</span></div>
+          <dl class="results" id="results">
+            <div class="result" data-side="left"><dt>Left</dt><dd class="result-value">—</dd><p class="result-caption"></p></div>
+            <div class="result" data-side="right"><dt>Right</dt><dd class="result-value">—</dd><p class="result-caption"></p></div>
+            <div class="result" data-side="top"><dt>Top</dt><dd class="result-value">—</dd><p class="result-caption"></p></div>
+            <div class="result" data-side="bottom"><dt>Bottom</dt><dd class="result-value">—</dd><p class="result-caption"></p></div>
+          </dl>
+          <p class="calculation-status" id="calculation-status" aria-live="polite"></p>
+          <details class="formula"><summary>How the numbers are calculated</summary><p>Left = left offset − left extent.<br>Right = room width − left offset − table width − right extent.<br>Top = top offset − top extent.<br>Bottom = room depth − top offset − table depth − bottom extent.</p><p>A negative result means this rectangular envelope crosses that boundary. A positive result is the distance remaining in this model. Assess furniture fit, movement and safe passage separately.</p></details>
+
+          <section class="record-panel" aria-labelledby="record-title"><div><h3 id="record-title">Keep a measurement record</h3><p class="small">Save the inputs, calculated values and measurement source together. CSV includes the stored centimetre values.</p></div><div class="record-actions"><button type="button" class="button button-light" id="print">Print / save PDF</button><button type="button" class="button" id="export">Download CSV</button></div><p class="export-status small" id="export-status" role="status"></p></section>
+          <p class="print-record" id="print-record"></p>
+        </section>
+      </div>
+
+      <section class="notes" aria-labelledby="scope-title"><h2 id="scope-title">Keep the model tied to the room</h2><p>Use the same unit and orientation for every measurement. Check the exact table variant, chair positions, doors, routes and local requirements separately. This tool represents rectangular geometry from the entered values.</p><p>To start comparing a piece, browse the <a href="https://wehomzfurn.com/collections/furniture">WEHOMZ furniture collection</a>, then use the specific item’s dimensions in the model.</p></section>
+    </main>
+    <footer><p>Published by WEHOMZ, a furniture and home retailer. This tool was prepared with AI assistance.</p><p>Inputs stay in this page’s memory. Reloading the page restores the illustrative example.</p></footer>
+  </div>
+  <noscript><p class="noscript">JavaScript is required to calculate and draw this model. The calculation formulas are listed above.</p></noscript>
+</body>
+</html>
